@@ -21,4 +21,18 @@ class rbenv::params {
       'source'   => 'https://github.com/sstephenson/rbenv-default-gems.git'
     }
   }
+
+  case $::osfamily {
+    FreeBSD: {
+      # ruby-build will do this itself, but FreeBSD 10 is an exception
+      if versioncmp($::kernelversion, "10.0") >= 0 {
+        $compile_ENV = 'MAKE=make'
+      } else {
+        $compile_ENV = 'MAKE=gmake'
+      }
+    }
+    default: {
+      $compile_ENV = 'MAKE=make'
+    }
+  }
 }
