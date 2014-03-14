@@ -1,6 +1,7 @@
 define rbenv::ruby (
   $user,
-  $version = $title
+  $ensure  = 'present',
+  $version = $title,
 ) {
 
   include rbenv
