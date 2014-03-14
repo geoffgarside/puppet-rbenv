@@ -25,6 +25,7 @@ class rbenv::params {
   case $::osfamily {
     FreeBSD: {
       # ruby-build will do this itself, but FreeBSD 10 is an exception
+      # so we'll give it a helping hand here.
       if versioncmp($::kernelversion, "10.0") >= 0 {
         $compile_ENV = 'MAKE=make'
       } else {
