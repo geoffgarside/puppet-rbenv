@@ -3,8 +3,9 @@ define rbenv::build (
   $version = $title,
 ) {
 
-  include rbenv
   include stdlib
+  include rbenv
+  include rbenv::depends
 
   $versions_path = "${::rbenv::rbenv_root}/versions"
   $install_path  = "${versions_path}/${version}"
