@@ -6,6 +6,10 @@ class rbenv::params {
   $rbenv_version      = 'master'
   $rbenv_source       = 'https://github.com/sstephenson/rbenv.git'
 
-  $ruby_build_version = 'master'
-  $ruby_build_source  = 'https://github.com/sstephenson/ruby-build.git'
+  $rbenv_plugins      = {
+    'ruby-build' => {
+      'revision' => 'master',
+      'source'   => 'https://github.com/sstephenson/ruby-build.git'
+    },
+  }
 }

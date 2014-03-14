@@ -1,9 +1,9 @@
 class rbenv (
-  $ensure             = 'present',
-  $global             = $::rbenv::params::global,
-  $rbenv_root         = $::rbenv::params::rbenv_root,
-  $rbenv_version      = $::rbenv::params::rbenv_version,
-  $ruby_build_version = $::rbenv::praams::ruby_build_version,
+  $ensure        = 'present',
+  $global        = $::rbenv::params::global,
+  $rbenv_root    = $::rbenv::params::rbenv_root,
+  $rbenv_version = $::rbenv::params::rbenv_version,
+  $rbenv_plugins = $::rbenv::params::rbenv_plugins,
 ) {
 
   include rbenv::params

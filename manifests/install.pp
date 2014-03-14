@@ -7,11 +7,12 @@ class rbenv::install {
     revision => $::rbenv::rbenv_version,
     source   => $::rbenv::params::rbenv_source,
     provider => git,
-  }->
-  rbenv::plugin { 'ruby-build':
-    ensure   => $::rbenv::ensure,
-    revision => $::rbenv::ruby_build_version,
-    source   => $::rbenv::params::ruby_build_source,
   }
 
+  Rbenv::Plugin {
+    ensure => $::rbenv::ensure,
+  }
+
+  $_real_rbenv_plugins = merge($::rbenv::params::rbenv_plugins, $::rbenv::rbenv_plugins)
+  create_resources('rbenv::plugin', $_real_rbenv_plugins)
 }
