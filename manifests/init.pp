@@ -4,6 +4,7 @@ class rbenv (
   $rbenv_root    = $::rbenv::params::rbenv_root,
   $rbenv_version = $::rbenv::params::rbenv_version,
   $rbenv_plugins = $::rbenv::params::rbenv_plugins,
+  $default_gems  = $::rbenv::params::default_gems,
 ) {
 
   include rbenv::params
