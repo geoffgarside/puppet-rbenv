@@ -17,7 +17,7 @@ define rbenv::build (
   }
 
   if $ensure == 'absent' {
-    exec { "rbenv uninstall ${version}":
+    exec { "rbenv uninstall -f ${version}":
       onlyif => "test -d ${install_path}",
     }
   } else {
