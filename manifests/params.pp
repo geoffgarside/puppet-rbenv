@@ -19,7 +19,11 @@ class rbenv::params {
     'rbenv-default-gems' => {
       'revision' => 'master',
       'source'   => 'https://github.com/sstephenson/rbenv-default-gems.git'
-    }
+    },
+    'bundler' => {
+      'revision' => 'master',
+      'source'   => 'https://github.com/carsomyr/rbenv-bundler.git'
+    }  
   }
 
   case $::osfamily {
