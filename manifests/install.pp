@@ -1,7 +1,7 @@
 define rbenv::install (
-  $rbenv_root,
-  $global = $::rbenv::global,
-  $ensure = $::rbenv::ensure,
+  $rbenv_root = $title,
+  $global     = $::rbenv::global,
+  $ensure     = $::rbenv::ensure,
 ) {
 
   vcsrepo { $rbenv_root:
