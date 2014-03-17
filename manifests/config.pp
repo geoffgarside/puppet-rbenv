@@ -13,4 +13,20 @@ class rbenv::config {
       content => "${gem_list}\n",
     }
   }
+
+  group { 'rbenv':
+    ensure => $::rbenv::ensure ? {
+      'absent' => 'absent',
+      default  => 'present'
+    }
+  }
+
+  file { "${::rbenv::rbenv_root}/shims":
+    ensure  => $::rbenv::ensure ? {
+      'absent' => 'absent',
+      default  => 'present'
+    },
+    group   => 'rbenv',
+    require => Group['rbenv']
+  }
 }
