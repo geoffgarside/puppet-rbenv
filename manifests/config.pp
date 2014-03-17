@@ -21,24 +21,24 @@ define rbenv::config (
     content => template('rbenv/rbenv-profile.sh.erb'),
   }
 
-  $rbenv_profile_source = '. $HOME/.rbenv-profile.sh'
+  $rbenv_profile = '$HOME/.rbenv-profile.sh'
 
   Exec {
     path => ['/bin', '/usr/bin', '/usr/local/bin'],
   }
 
-  exec { "echo '${rbenv_profile_source}' >> ${user_homedir}/.cshrc":
-    unless => "grep '${rbenv_profile_source}' ${user_homedir}/.cshrc",
+  exec { "echo 'source ${rbenv_profile}' >> ${user_homedir}/.cshrc":
+    unless => "grep '${rbenv_profile}' ${user_homedir}/.cshrc",
     onlyif => "test -f ${user_homedir}/.cshrc",
   }
 
-  exec { "echo '${rbenv_profile_source}' >> ${user_homedir}/.profile":
-    unless => "grep '${rbenv_profile_source}' ${user_homedir}/.profile",
+  exec { "echo '. ${rbenv_profile}' >> ${user_homedir}/.profile":
+    unless => "grep '${rbenv_profile}' ${user_homedir}/.profile",
     onlyif => "test -f ${user_homedir}/.profile",
   }
-  
-  exec { "echo '${rbenv_profile_source}' >> ${user_homedir}/.bashrc":
-    unless => "grep '${rbenv_profile_source}' ${user_homedir}/.bashrc",
+
+  exec { "echo '. ${rbenv_profile}' >> ${user_homedir}/.bashrc":
+    unless => "grep '${rbenv_profile}' ${user_homedir}/.bashrc",
     onlyif => "test -f ${user_homedir}/.bashrc",
   }
 }
