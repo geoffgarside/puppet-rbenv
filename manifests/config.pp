@@ -14,7 +14,11 @@ define rbenv::config (
     default => "${user_homedir}/.rbenv"
   }
   
-  file { "${user_homedir}/.bash_profile":
+  file { [
+    "${user_homedir}/.cshrc",
+    "${user_homedir}/.profile",
+    "${user_homedir}/.bash_profile"
+  ]:
     ensure => file,
     owner  => $user,
   }
