@@ -8,18 +8,6 @@ define rbenv::ruby (
 
   include rbenv
 
-  if ! defined(Rbenv::Build[$version]) {
-    rbenv::build { $version:
-      ensure => $ensure,
-    }
-  }
-  
-  if ! defined(Rbenv::User[$user]) {
-    rbenv::user { $user:
-      ensure => $ensure,
-    }
-  }
-
   $_homedir = $user ? {
     'root'  => '/root',
     default => "/home/${user}"
@@ -33,6 +21,20 @@ define rbenv::ruby (
   $link_ensure = $ensure ? {
     'absent' => 'absent',
     default  => 'link'
+  }
+
+  if ! defined(Rbenv::Build[$version]) {
+    rbenv::build { $version:
+      ensure => $ensure,
+    }
+  }
+  
+  if ! defined(Rbenv::User[$user]) {
+    rbenv::user { $user:
+      ensure      => $ensure,
+      home        => $user_homedir,
+      rbenv_root  => $user_rbenv_root,
+    }
   }
 
   file { "${user_rbenv_versions}/${version}":
