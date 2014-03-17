@@ -10,7 +10,7 @@ class rbenv (
 
   $rbenv_bin    = "${rbenv_root}/bin"
   $rbenv_shims  = "${rbenv_root}/shims"
-  $rbenv_PATH   = [ $rbenv_bin, $rbenv_shims ]
+  $rbenv_PATH   = [ $rbenv_shims, $rbenv_bin ]
   $rbenv_ENV    = "RBENV_ROOT=${rbenv_root}"
 
   rbenv::install { $rbenv_root: }->
