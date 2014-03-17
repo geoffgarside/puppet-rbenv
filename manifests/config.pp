@@ -2,10 +2,6 @@ define rbenv::config (
   $user    = $title,
   $homedir = undef,
 ) {
-  $file_ensure = $::rbenv::ensure ? {
-    'absent' => 'absent',
-    default  => 'file'
-  }
 
   $_homedir = $user ? {
     'root'  => '/root',
@@ -13,32 +9,54 @@ define rbenv::config (
   }
 
   $user_homedir = pick($homedir, $_homedir)
+  $rbenv_root = $user ? {
+    'root'  => $::rbenv::rbenv_root,
+    default => "${user_homedir}/.rbenv"
+  }
 
   file { "${user_homedir}/.rbenv-profile.sh":
-    ensure  => $file_ensure,
+    ensure  => 'absent',
     owner   => $user,
     mode    => '0755',
     content => template('rbenv/rbenv-profile.sh.erb'),
   }
 
-  $rbenv_profile = '$HOME/.rbenv-profile.sh'
-
-  Exec {
-    path => ['/bin', '/usr/bin', '/usr/local/bin'],
+  file_line { "${user_homedir}/.cshrc RBENV PATH":
+    ensure  => $::rbenv::ensure,
+    path    => "${user_homedir}/.cshrc",
+    line    => "set path = (${rbenv_root}/shims ${rbenv_root}/bin \$path)",
   }
 
-  exec { "echo 'source ${rbenv_profile}' >> ${user_homedir}/.cshrc":
-    unless => "grep '${rbenv_profile}' ${user_homedir}/.cshrc",
-    onlyif => "test -f ${user_homedir}/.cshrc",
+  file_line { "${user_homedir}/.profile RBENV PATH":
+    ensure  => $::rbenv::ensure,
+    path    => "${user_homedir}/.profile",
+    line    => "export PATH=${rbenv_root}/shims:${rbenv_root}/bin:\$PATH",
   }
 
-  exec { "echo '. ${rbenv_profile}' >> ${user_homedir}/.profile":
-    unless => "grep '${rbenv_profile}' ${user_homedir}/.profile",
-    onlyif => "test -f ${user_homedir}/.profile",
+  file_line { "${user_homedir}/.bash_profile RBENV PATH":
+    ensure  => $::rbenv::ensure,
+    path    => "${user_homedir}/.bash_profile",
+    line    => "export PATH=${rbenv_root}/shims:${rbenv_root}/bin:\$PATH",
   }
 
-  exec { "echo '. ${rbenv_profile}' >> ${user_homedir}/.bashrc":
-    unless => "grep '${rbenv_profile}' ${user_homedir}/.bashrc",
-    onlyif => "test -f ${user_homedir}/.bashrc",
+  # If we don't have a .rbenv then set RBENV_ROOT
+  if $rbenv_root == $::rbenv::rbenv_root {
+    file_line { "${user_homedir}/.cshrc RBENV_ROOT":
+      ensure  => $::rbenv::ensure,
+      path    => "${user_homedir}/.cshrc",
+      line    => "setenv RBENV_ROOT ${rbenv_root}",
+    }
+    
+    file_line { "${user_homedir}/.profile RBENV_ROOT":
+      ensure  => $::rbenv::ensure,
+      path    => "${user_homedir}/.profile",
+      line    => "export RBENV_ROOT=${rbenv_root}",
+    }
+
+    file_line { "${user_homedir}/.bash_profile RBENV_ROOT":
+      ensure  => $::rbenv::ensure,
+      path    => "${user_homedir}/.bash_profile",
+      line    => "export RBENV_ROOT=${rbenv_root}",
+    }
   }
 }
