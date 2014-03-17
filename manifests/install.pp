@@ -17,7 +17,7 @@ define rbenv::install (
     'absent' => 'absent',
     default  => 'file'
   }
-  
+
   file { "${rbenv_root}/version":
     ensure  => $file_ensure,
     content => "${global}\n",
