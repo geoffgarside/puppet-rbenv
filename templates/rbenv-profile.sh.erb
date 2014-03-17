@@ -1,11 +1,13 @@
 case "$PATH" in
-*$HOME/.rbenv/bin*)
+*$HOME/.rbenv/bin*) ;;
+*)
 	export PATH=$HOME/.rbenv/bin:$PATH
 	;;
 esac
 
 case "$PATH" in
-*$HOME/.rbenv/shims*)
+*$HOME/.rbenv/shims*) ;;
+*)
 	export PATH=$HOME/.rbenv/shims:$PATH
 	;;
 esac
