@@ -16,5 +16,5 @@ define rbenv::user (
   $user_rbenv_root        = pick($rbenv_root, "${user_homedir}/.rbenv")
 
   rbenv::install { $user_rbenv_root: user => $user, }->
-  rbenv::config { $user: homedir => $user_rbenv_root, }
+  rbenv::config { $user: homedir => $user_homedir, }
 }
