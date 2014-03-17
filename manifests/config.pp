@@ -13,12 +13,10 @@ define rbenv::config (
     'root'  => $::rbenv::rbenv_root,
     default => "${user_homedir}/.rbenv"
   }
-
-  file { "${user_homedir}/.rbenv-profile.sh":
-    ensure  => 'absent',
-    owner   => $user,
-    mode    => '0755',
-    content => template('rbenv/rbenv-profile.sh.erb'),
+  
+  file { "${user_homedir}/.bash_profile":
+    ensure => file,
+    owner  => $user,
   }
 
   file_line { "${user_homedir}/.cshrc RBENV PATH":
