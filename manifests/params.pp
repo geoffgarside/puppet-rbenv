@@ -2,7 +2,7 @@ class rbenv::params {
 
   $global             = 'system'
 
-  $rbenv_root         = '/usr/local/rbenv'
+  $rbenv_root         = '/usr/local/share/rbenv'
   $rbenv_version      = 'master'
   $rbenv_source       = 'https://github.com/sstephenson/rbenv.git'
 
