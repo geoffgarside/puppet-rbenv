@@ -1,19 +1,30 @@
 require 'puppet/parser/functions'
 
 module Puppet::Parser::Functions
-  newfunction(:suffix_keys, :type => :rvalue, :doc => "Appends a suffix to each key of a Hash.") do |arguments|
+  newfunction(:suffix_keys, :type => :rvalue, :doc => <<-EOS
+Returns a copy of input hash where the keys have been appended to with the suffix.
 
-    if arguments.size != 2
+*Examples*:
+
+    $hash = suffix_keys({'a' => 'b'}, 'c')
+
+Would return {'ac' => 'b'}
+
+    EOS
+  ) do |args|
+    if args.size != 2
       raise(Puppet::ParseError, "suffix_keys(Hash, Suffix String): Wrong number of arguments " +
-        "given (#{arguments.size} for 2)")
+        "given (#{args.size} for 2)")
     end
 
-    hash = arguments.shift
-    suff = arguments.shift
+    unless args[0].is_a? Hash
+      raise(Puppet::ParseError,
+            "suffix_keys(): expected a hash, got #{args[0]} type #{args[0].class} ")
+    end
 
-    hash.inject({}) do |h, kv|
+    args[0].inject({}) do |h, kv|
       k, v = kv
-      h["#{k}#{suff}"] = v
+      h["#{k}#{args[1]}"] = v
       h
     end    
   end  
