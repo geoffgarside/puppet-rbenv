@@ -31,7 +31,7 @@ define rbenv::install (
   }
 
   $_real_rbenv_plugins = merge($::rbenv::params::rbenv_plugins, $::rbenv::rbenv_plugins)
-  $_user_rbenv_plugins = suffix_keys($_real_rbenv_plugins, " ${user}")
+  $_user_rbenv_plugins = rbenv_suffix_keys($_real_rbenv_plugins, " ${user}")
 
   create_resources('rbenv::plugin', $_user_rbenv_plugins)
   if has_key($_real_rbenv_plugins, 'rbenv-default-gems') {
