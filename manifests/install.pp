@@ -1,5 +1,6 @@
 define rbenv::install (
   $rbenv_root,
+  $global = $::rbenv::global,
   $ensure = $::rbenv::ensure,
 ) {
 
@@ -8,6 +9,16 @@ define rbenv::install (
     revision => $::rbenv::rbenv_version,
     source   => $::rbenv::params::rbenv_source,
     provider => git,
+  }
+
+  $file_ensure = $::rbenv::ensure ? {
+    'absent' => 'absent',
+    default  => 'file'
+  }
+  
+  file { "${rbenv_root}/version":
+    ensure  => $file_ensure,
+    content => "${global}\n",
   }
 
   Rbenv::Plugin {
@@ -20,10 +31,6 @@ define rbenv::install (
   create_resources('rbenv::plugin', $_real_rbenv_plugins)
   if has_key($_real_rbenv_plugins, 'rbenv-default-gems') {
     $gem_list    = join($::rbenv::default_gems, "\n")
-    $file_ensure = $::rbenv::ensure ? {
-      'absent' => 'absent',
-      default  => 'file'
-    }
 
     file { "${rbenv_root}/default-gems":
       ensure  => $file_ensure,
