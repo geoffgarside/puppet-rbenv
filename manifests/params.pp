@@ -27,7 +27,7 @@ class rbenv::params {
       'plugin_name' => 'bundler',
       'revision'    => 'master',
       'source'      => 'https://github.com/carsomyr/rbenv-bundler.git'
-    }  
+    }
   }
 
   case $::osfamily {

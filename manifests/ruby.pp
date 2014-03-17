@@ -22,7 +22,7 @@ define rbenv::ruby (
   $rbenv_root             = "${user_homedir}/.rbenv"
   $rbenv_versions         = "${rbenv_root}/versions"
   $rbenv_shared_versions  = "${::rbenv::rbenv_root}/versions"
-  
+
   $link_ensure = $ensure ? {
     'absent' => 'absent',
     default  => 'link'
