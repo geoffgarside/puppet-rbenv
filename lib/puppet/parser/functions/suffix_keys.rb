@@ -8,8 +8,8 @@ module Puppet::Parser::Functions
         "given (#{arguments.size} for 2)")
     end
 
-    hash = arguments.unshift
-    suff = arguments.unshift
+    hash = arguments.shift
+    suff = arguments.shift
 
     hash.inject({}) do |h, kv|
       k, v = kv
