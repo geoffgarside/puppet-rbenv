@@ -23,6 +23,17 @@ define rbenv::install (
     content => "${global}\n",
     owner   => $user,
   }
+  
+  $dir_ensure = $::rbenv::ensure ? {
+    'absent' => 'absent',
+    default  => 'directory'
+  }
+
+  file { "${rbenv_root}/versions":
+    ensure => $dir_ensure,
+    owner  => $user,
+    mode   => '0755',
+  }
 
   Rbenv::Plugin {
     ensure      => $ensure,
