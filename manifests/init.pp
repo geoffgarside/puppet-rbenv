@@ -1,5 +1,6 @@
 class rbenv (
   $ensure        = 'present',
+  $user          = 'root',
   $global        = $::rbenv::params::global,
   $rbenv_root    = $::rbenv::params::rbenv_root,
   $rbenv_version = $::rbenv::params::rbenv_version,
