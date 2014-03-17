@@ -14,7 +14,5 @@ class rbenv (
   $rbenv_ENV    = "RBENV_ROOT=${rbenv_root}"
 
   rbenv::install { $rbenv_root: }->
-  class { '::rbenv::config': }->
-  Class['rbenv']
-
+  rbenv::config { $user: }
 }
