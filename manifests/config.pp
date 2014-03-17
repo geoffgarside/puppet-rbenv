@@ -1,32 +1,5 @@
 class rbenv::config {
-
-  $_real_rbenv_plugins = merge($::rbenv::params::rbenv_plugins, $::rbenv::rbenv_plugins)
-  if has_key($_real_rbenv_plugins, 'rbenv-default-gems') {
-    $gem_list    = join($::rbenv::default_gems, "\n")
-    $file_ensure = $::rbenv::ensure ? {
-      'absent' => 'absent',
-      default  => 'file'
-    }
-
-    file { "${::rbenv::rbenv_root}/default-gems":
-      ensure  => $file_ensure,
-      content => "${gem_list}\n",
-    }
-  }
-
-  group { 'rbenv':
-    ensure => $::rbenv::ensure ? {
-      'absent' => 'absent',
-      default  => 'present'
-    }
-  }
-
-  file { "${::rbenv::rbenv_root}/shims":
-    ensure  => $::rbenv::ensure ? {
-      'absent' => 'absent',
-      default  => 'present'
-    },
-    group   => 'rbenv',
-    require => Group['rbenv']
-  }
+  # Configure the 'root' user to use rbenv
+  
+  
 }

@@ -3,11 +3,11 @@ define rbenv::plugin (
   $ensure       = 'present',
   $revision     = 'master',
   $plugin_name  = $title,
+  $rbenv_root   = $::rbenv::rbenv_root,
 ) {
 
   include rbenv
 
-  $rbenv_root   = $::rbenv::rbenv_root
   $plugins_path = "${rbenv_root}/plugins"
   $install_path = "${plugins_path}/${plugin_name}"
 
