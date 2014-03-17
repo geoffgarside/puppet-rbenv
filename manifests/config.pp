@@ -1,12 +1,20 @@
 define rbenv::config (
-  $user = $title
+  $user    = $title,
+  $homedir = undef,
 ) {
   $file_ensure = $::rbenv::ensure ? {
     'absent' => 'absent',
     default  => 'file'
   }
 
-  file { "/home/${user}/.rbenv-profile.sh":
+  $_homedir = $user ? {
+    'root'  => '/root',
+    default => "/home/${user}"
+  }
+
+  $user_homedir = pick($homedir, $_homedir)
+
+  file { "${user_homedir}/.rbenv-profile.sh":
     ensure  => $file_ensure,
     owner   => $user,
     mode    => '0755',
@@ -19,18 +27,18 @@ define rbenv::config (
     path => ['/bin', '/usr/bin', '/usr/local/bin'],
   }
 
-  exec { "echo '${rbenv_profile_source}' >> ~${user}/.cshrc":
-    unless => "grep '${rbenv_profile_source}' ~${user}/.cshrc",
-    onlyif => "test -f ~${user}/.cshrc",
+  exec { "echo '${rbenv_profile_source}' >> ${user_homedir}/.cshrc":
+    unless => "grep '${rbenv_profile_source}' ${user_homedir}/.cshrc",
+    onlyif => "test -f ${user_homedir}/.cshrc",
   }
 
-  exec { "echo '${rbenv_profile_source}' >> ~${user}/.profile":
-    unless => "grep '${rbenv_profile_source}' ~${user}/.profile",
-    onlyif => "test -f ~${user}/.profile",
+  exec { "echo '${rbenv_profile_source}' >> ${user_homedir}/.profile":
+    unless => "grep '${rbenv_profile_source}' ${user_homedir}/.profile",
+    onlyif => "test -f ${user_homedir}/.profile",
   }
   
-  exec { "echo '${rbenv_profile_source}' >> ~${user}/.bashrc":
-    unless => "grep '${rbenv_profile_source}' ~${user}/.bashrc",
-    onlyif => "test -f ~${user}/.bashrc",
+  exec { "echo '${rbenv_profile_source}' >> ${user_homedir}/.bashrc":
+    unless => "grep '${rbenv_profile_source}' ${user_homedir}/.bashrc",
+    onlyif => "test -f ${user_homedir}/.bashrc",
   }
 }
