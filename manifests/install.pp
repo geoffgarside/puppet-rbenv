@@ -31,11 +31,13 @@ define rbenv::install (
     ensure => $dir_ensure,
     owner  => $user,
     mode   => '0755',
-  }->
+  }
+
   Rbenv::Plugin {
     ensure      => $ensure,
     rbenv_root  => $rbenv_root,
     user        => $user,
+    require     => Vcsrepo[$rbenv_root],
   }
 
   $_real_rbenv_plugins = merge($::rbenv::params::rbenv_plugins, $::rbenv::rbenv_plugins)
