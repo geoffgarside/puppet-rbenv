@@ -5,36 +5,33 @@ define rbenv::install (
   $user       = $::rbenv::user,
 ) {
 
+  $file_ensure = $::rbenv::ensure ? {
+    'absent' => 'absent',
+    default  => 'file'
+  }
+
+  $dir_ensure = $::rbenv::ensure ? {
+    'absent' => 'absent',
+    default  => 'directory'
+  }
+
   vcsrepo { $rbenv_root:
     ensure   => $ensure,
     provider => git,
     revision => $::rbenv::rbenv_version,
     source   => $::rbenv::params::rbenv_source,
     user     => $user,
-  }
-
-  $file_ensure = $::rbenv::ensure ? {
-    'absent' => 'absent',
-    default  => 'file'
-  }
-
+  }->
   file { "${rbenv_root}/version":
     ensure  => $file_ensure,
     content => "${global}\n",
     owner   => $user,
-  }
-  
-  $dir_ensure = $::rbenv::ensure ? {
-    'absent' => 'absent',
-    default  => 'directory'
-  }
-
+  }->
   file { "${rbenv_root}/versions":
     ensure => $dir_ensure,
     owner  => $user,
     mode   => '0755',
-  }
-
+  }->
   Rbenv::Plugin {
     ensure      => $ensure,
     rbenv_root  => $rbenv_root,
@@ -52,6 +49,7 @@ define rbenv::install (
       ensure  => $file_ensure,
       content => "${gem_list}\n",
       owner   => $user,
+      require => Vcsrepo[$rbenv_root],
     }
   }
 }

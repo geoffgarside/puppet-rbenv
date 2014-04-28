@@ -28,12 +28,13 @@ define rbenv::ruby (
       ensure => $ensure,
     }
   }
-  
+
   if ! defined(Rbenv::User[$user]) {
     rbenv::user { $user:
       ensure      => $ensure,
       home        => $user_homedir,
       rbenv_root  => $user_rbenv_root,
+      require     => Rbenv::Build[$version],
     }
   }
 

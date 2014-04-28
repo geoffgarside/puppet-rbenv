@@ -13,7 +13,7 @@ define rbenv::config (
     'root'  => $::rbenv::rbenv_root,
     default => "${user_homedir}/.rbenv"
   }
-  
+
   file { [
     "${user_homedir}/.cshrc",
     "${user_homedir}/.profile",
@@ -27,18 +27,21 @@ define rbenv::config (
     ensure  => $::rbenv::ensure,
     path    => "${user_homedir}/.cshrc",
     line    => "set path = (${rbenv_root}/shims ${rbenv_root}/bin \$path)",
+    require => File["${user_homedir}/.cshrc"],
   }
 
   file_line { "${user_homedir}/.profile RBENV PATH":
     ensure  => $::rbenv::ensure,
     path    => "${user_homedir}/.profile",
     line    => "export PATH=${rbenv_root}/shims:${rbenv_root}/bin:\$PATH",
+    require => File["${user_homedir}/.profile"],
   }
 
   file_line { "${user_homedir}/.bash_profile RBENV PATH":
     ensure  => $::rbenv::ensure,
     path    => "${user_homedir}/.bash_profile",
     line    => "export PATH=${rbenv_root}/shims:${rbenv_root}/bin:\$PATH",
+    require => File["${user_homedir}/.bash_profile"],
   }
 
   # If we don't have a .rbenv then set RBENV_ROOT
@@ -47,18 +50,21 @@ define rbenv::config (
       ensure  => $::rbenv::ensure,
       path    => "${user_homedir}/.cshrc",
       line    => "setenv RBENV_ROOT ${rbenv_root}",
+      require => File["${user_homedir}/.cshrc"],
     }
-    
+
     file_line { "${user_homedir}/.profile RBENV_ROOT":
       ensure  => $::rbenv::ensure,
       path    => "${user_homedir}/.profile",
       line    => "export RBENV_ROOT=${rbenv_root}",
+      require => File["${user_homedir}/.profile"],
     }
 
     file_line { "${user_homedir}/.bash_profile RBENV_ROOT":
       ensure  => $::rbenv::ensure,
       path    => "${user_homedir}/.bash_profile",
       line    => "export RBENV_ROOT=${rbenv_root}",
+      require => File["${user_homedir}/.bash_profile"],
     }
   }
 }
