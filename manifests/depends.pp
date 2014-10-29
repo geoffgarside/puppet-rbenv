@@ -30,7 +30,7 @@ class rbenv::depends {
       ])
     }
     default: {
-      warn("rbenv::depends not defined for ${::osfamily}, building of rubies may fail")
+      notice("rbenv::depends not defined for ${::osfamily}, building of rubies may fail")
     }
   }
 }
