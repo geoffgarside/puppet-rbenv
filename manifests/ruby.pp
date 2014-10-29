@@ -1,6 +1,6 @@
 define rbenv::ruby (
   $user,
-  $version,
+  $version    = $name,
   $ensure     = 'present',
   $home       = undef,
   $rbenv_root = $::rbenv::rbenv_root,
