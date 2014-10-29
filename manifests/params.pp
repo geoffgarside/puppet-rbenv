@@ -6,7 +6,7 @@ class rbenv::params {
   $rbenv_version      = 'master'
   $rbenv_source       = 'https://github.com/sstephenson/rbenv.git'
 
-  $default_gems       = ['bundler ~>1.5.1']
+  $default_gems       = ['bundler ~>1.7.4']
   $rbenv_plugins      = {
     'ruby-build' => {
       'plugin_name' => 'ruby-build',
