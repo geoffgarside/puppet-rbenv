@@ -3,7 +3,7 @@ define rbenv::ruby (
   $version    = $name,
   $ensure     = 'present',
   $home       = undef,
-  $rbenv_root = $::rbenv::rbenv_root,
+  $rbenv_root = undef,
 ) {
 
   include rbenv
