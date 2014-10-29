@@ -39,9 +39,16 @@ class rbenv::params {
       } else {
         $compile_ENV = 'MAKE=gmake'
       }
+
+      $homedir = '/usr/home'
+    }
+    Darwin: {
+      $compile_ENV = 'MAKE=make'
+      $homedir     = '/Users'
     }
     default: {
       $compile_ENV = 'MAKE=make'
+      $homedir     = '/home'
     }
   }
 }
