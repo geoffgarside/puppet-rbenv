@@ -40,15 +40,24 @@ class rbenv::params {
         $compile_ENV = 'MAKE=gmake'
       }
 
-      $homedir = '/usr/home'
+      $homedir          = '/usr/home'
+      $has_cshrc        = true
+      $has_profile      = true
+      $has_bash_profile = true
     }
     Darwin: {
-      $compile_ENV = 'MAKE=make'
-      $homedir     = '/Users'
+      $compile_ENV      = 'MAKE=make'
+      $homedir          = '/Users'
+      $has_cshrc        = false
+      $has_profile      = false
+      $has_bash_profile = false
     }
     default: {
-      $compile_ENV = 'MAKE=make'
-      $homedir     = '/home'
+      $compile_ENV      = 'MAKE=make'
+      $homedir          = '/home'
+      $has_cshrc        = false
+      $has_profile      = false
+      $has_bash_profile = false
     }
   }
 }
