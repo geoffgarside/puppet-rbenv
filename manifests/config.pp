@@ -5,7 +5,7 @@ define rbenv::config (
 
   $_homedir = $user ? {
     'root'  => '/root',
-    default => "/${::rbenv::params::homedir}/${user}"
+    default => "${::rbenv::params::homedir}/${user}"
   }
 
   $user_homedir = pick($homedir, $_homedir)
