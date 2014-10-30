@@ -46,7 +46,7 @@ class rbenv::params {
       $has_bash_profile = true
     }
     Darwin: {
-      $compile_ENV      = 'MAKE=make'
+      $compile_ENV      = 'MAKE=make LDFLAGS=-L/usr/local/opt/openssl/lib CPPFLAGS=-I/usr/local/opt/openssl/include'
       $homedir          = '/Users'
       $has_cshrc        = false
       $has_profile      = false
