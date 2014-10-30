@@ -23,8 +23,9 @@ define rbenv::build (
     }
   } else {
     exec { "rbenv install ${version}":
-      creates => $install_path,
-      require => [
+      logoutput => 'on_failure',
+      creates   => $install_path,
+      require   => [
         Class['rbenv'],
         Class['rbenv::depends']
       ],
