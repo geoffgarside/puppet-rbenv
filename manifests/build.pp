@@ -14,7 +14,7 @@ define rbenv::build (
 
   Exec {
     path        => concat($::rbenv::rbenv_PATH, $default_PATH),
-    environment => [$::rbenv::rbenv_ENV, $compile_ENV],
+    environment => concat($::rbenv::rbenv_ENV, $compile_ENV),
   }
 
   if $ensure == 'absent' {
