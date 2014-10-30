@@ -25,6 +25,7 @@ define rbenv::build (
     exec { "rbenv install ${version}":
       logoutput => 'on_failure',
       creates   => $install_path,
+      timeout   => 0,
       require   => [
         Class['rbenv'],
         Class['rbenv::depends']
