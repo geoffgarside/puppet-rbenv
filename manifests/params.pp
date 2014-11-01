@@ -1,5 +1,9 @@
 class rbenv::params {
 
+  $user               = 'root'
+  $owner              = 'root'
+  $group              = '0'
+
   $global             = 'system'
 
   $rbenv_root         = '/usr/local/share/rbenv'

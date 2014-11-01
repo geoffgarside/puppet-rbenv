@@ -5,8 +5,9 @@ define rbenv::plugin (
   $plugin_name  = $title,
   $rbenv_root   = $::rbenv::rbenv_root,
   $user         = $::rbenv::user,
+  $owner        = $::rbenv::owner,
+  $group        = $::rbenv::group,
 ) {
-
   include rbenv
 
   $plugins_path = "${rbenv_root}/plugins"
@@ -18,9 +19,11 @@ define rbenv::plugin (
 
   vcsrepo { $install_path:
     ensure    => $ensure,
-    provider  => git,
+    provider  => 'git',
     revision  => $revision,
     source    => $source,
     user      => $user,
+    owner     => $owner,
+    group     => $group,
   }
 }

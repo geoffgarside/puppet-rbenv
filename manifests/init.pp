@@ -1,6 +1,8 @@
 class rbenv (
   $ensure        = 'present',
-  $user          = 'root',
+  $user          = $::rbenv::params::user,
+  $owner         = $::rbenv::params::owner,
+  $group         = $::rbenv::params::group,
   $global        = $::rbenv::params::global,
   $rbenv_root    = $::rbenv::params::rbenv_root,
   $rbenv_version = $::rbenv::params::rbenv_version,
@@ -13,7 +15,8 @@ class rbenv (
   $rbenv_PATH   = [ $rbenv_shims, $rbenv_bin ]
   $rbenv_ENV    = ["RBENV_ROOT=${rbenv_root}"]
 
-  rbenv::user { $user:
-    rbenv_root => $rbenv_root,
-  }
+  class { '::rbenv::depends': }->
+  class { '::rbenv::install': }->
+  class { '::rbenv::config': }->
+  Class['rbenv']
 }

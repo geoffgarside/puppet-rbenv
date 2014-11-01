@@ -1,36 +1,42 @@
-define rbenv::install (
-  $rbenv_root = $title,
-  $global     = $::rbenv::global,
-  $ensure     = $::rbenv::ensure,
-  $user       = $::rbenv::user,
-) {
-
-  $file_ensure = $::rbenv::ensure ? {
-    'absent' => 'absent',
-    default  => 'file'
+class rbenv::install {
+  case $::rbenv::ensure {
+    'absent': {
+      $file_ensure = 'absent'
+      $dir_ensure  = 'absent'
+    }
+    default: {
+      $file_ensure = 'file'
+      $dir_ensure  = 'directory'
+    }
   }
 
-  $dir_ensure = $::rbenv::ensure ? {
-    'absent' => 'absent',
-    default  => 'directory'
-  }
+  $user          = $::rbenv::user
+  $owner         = $::rbenv::owner
+  $group         = $::rbenv::group
+  $rbenv_root    = $::rbenv::rbenv_root
+  $rbenv_source  = $::rbenv::params::rbenv_source
+  $rbenv_version = $::rbenv::rbenv_version
 
   vcsrepo { $rbenv_root:
-    ensure   => $ensure,
-    provider => git,
-    revision => $::rbenv::rbenv_version,
-    source   => $::rbenv::params::rbenv_source,
+    ensure   => $::rbenv::ensure,
+    provider => 'git',
+    revision => $rbenv_version,
+    source   => $rbenv_source,
     user     => $user,
-  }->
-  file { "${rbenv_root}/version":
-    ensure  => $file_ensure,
-    content => "${global}\n",
-    owner   => $user,
-  }->
-  file { "${rbenv_root}/versions":
-    ensure => $dir_ensure,
-    owner  => $user,
-    mode   => '0755',
+    owner    => $owner,
+    group    => $group,
+  }
+
+  file { [
+    "${rbenv_root}/shims",
+    "${rbenv_root}/plugins",
+    "${rbenv_root}/versions",
+    ]:
+    ensure  => $dir_ensure,
+    mode    => '0755',
+    owner   => $owner,
+    group   => $group,
+    require => Vcsrepo[$rbenv_root],
   }
 
   Rbenv::Plugin {
@@ -44,14 +50,4 @@ define rbenv::install (
   $_user_rbenv_plugins = rbenv_suffix_keys($_real_rbenv_plugins, " ${user}")
 
   create_resources('rbenv::plugin', $_user_rbenv_plugins)
-  if has_key($_real_rbenv_plugins, 'rbenv-default-gems') {
-    $gem_list = join($::rbenv::default_gems, "\n")
-
-    file { "${rbenv_root}/default-gems":
-      ensure  => $file_ensure,
-      content => "${gem_list}\n",
-      owner   => $user,
-      require => Vcsrepo[$rbenv_root],
-    }
-  }
 }
