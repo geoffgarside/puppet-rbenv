@@ -29,6 +29,12 @@ class rbenv::depends {
         'libc6-dev'
       ])
     }
+    Darwin: {
+      ensure_rbenv_dependency([
+        'libyaml',
+        'readline'
+      ])
+    }
     default: {
       notice("rbenv::depends not defined for ${::osfamily}, building of rubies may fail")
     }
