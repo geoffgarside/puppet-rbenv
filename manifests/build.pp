@@ -10,11 +10,13 @@ define rbenv::build (
   $versions_path = "${::rbenv::rbenv_root}/versions"
   $install_path  = "${versions_path}/${version}"
   $default_PATH  = ['/bin', '/usr/bin', '/usr/local/bin']
-  $compile_ENV   = $::rbenv::params::compile_ENV
+  $compile_ENV   = any2array($::rbenv::params::compile_ENV)
+  $rbenv_ENV     = any2array($::rbenv::rbenv_ENV)
+  $rbenv_PATH    = any2array($::rbenv::rbenv_PATH)
 
   Exec {
-    path        => concat($::rbenv::rbenv_PATH, $default_PATH),
-    environment => concat($::rbenv::rbenv_ENV, $compile_ENV),
+    path        => concat($rbenv_PATH, $default_PATH),
+    environment => concat($rbenv_ENV, $compile_ENV),
   }
 
   if $ensure == 'absent' {
