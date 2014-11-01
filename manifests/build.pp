@@ -14,21 +14,23 @@ define rbenv::build (
   $rbenv_ENV     = any2array($::rbenv::rbenv_ENV)
   $rbenv_PATH    = any2array($::rbenv::rbenv_PATH)
 
-  Exec {
-    path        => concat($rbenv_PATH, $default_PATH),
-    environment => concat($rbenv_ENV, $compile_ENV),
-  }
+  $exec_path        = concat($rbenv_PATH, $default_PATH)
+  $exec_environment = concat($rbenv_ENV, $compile_ENV)
 
   if $ensure == 'absent' {
     exec { "rbenv uninstall -f ${version}":
-      onlyif => "test -d ${install_path}",
+      onlyif      => "test -d ${install_path}",
+      path        => $exec_path,
+      environment => $exec_environment,
     }
   } else {
     exec { "rbenv install ${version}":
-      logoutput => 'on_failure',
-      creates   => $install_path,
-      timeout   => 0,
-      require   => [
+      path        => $exec_path,
+      environment => $exec_environment,
+      logoutput   => 'on_failure',
+      creates     => $install_path,
+      timeout     => 0,
+      require     => [
         Class['rbenv'],
         Class['rbenv::depends']
       ],
