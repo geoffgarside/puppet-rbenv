@@ -36,32 +36,16 @@ class rbenv::params {
 
   case $::osfamily {
     FreeBSD: {
-      # ruby-build will do this itself, but FreeBSD 10 is an exception
-      # so we'll give it a helping hand here.
-      if versioncmp($::kernelversion, "10.0") >= 0 {
-        $compile_ENV = 'MAKE=make'
-      } else {
-        $compile_ENV = 'MAKE=gmake'
-      }
-
-      $homedir          = '/usr/home'
-      $has_cshrc        = true
-      $has_profile      = true
-      $has_bash_profile = true
+      $root_homedir = '/root'
+      $user_homedir = '/usr/home'
     }
     Darwin: {
-      $compile_ENV      = 'MAKE=make'
-      $homedir          = '/Users'
-      $has_cshrc        = false
-      $has_profile      = false
-      $has_bash_profile = false
+      $root_homedir = '/var/root'
+      $user_homedir = '/Users'
     }
     default: {
-      $compile_ENV      = 'MAKE=make'
-      $homedir          = '/home'
-      $has_cshrc        = false
-      $has_profile      = false
-      $has_bash_profile = false
+      $root_homedir = '/root'
+      $user_homedir = '/home'
     }
   }
 }
