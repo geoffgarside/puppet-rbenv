@@ -25,6 +25,11 @@ define rbenv::user(
     default  => 'directory',
   }
 
+  $file_ensure = $ensure ? {
+    'absent' => 'absent',
+    default  => 'file',
+  }
+
   # Create the users rbenv root directory
   file { $user_rbenv_root:
     ensure  => $dir_ensure,
@@ -40,6 +45,17 @@ define rbenv::user(
     owner   => $user,
     group   => $user_group,
     mode    => '0755',
+    purge   => false,
+    replace => false,
+    require => File[$user_rbenv_root],
+  }
+
+  file { "${user_rbenv_root}/version":
+    ensure  => $file_ensure,
+    content => "system\n",
+    owner   => $user,
+    group   => $user_group,
+    mode    => '0644',
     purge   => false,
     replace => false,
     require => File[$user_rbenv_root],
