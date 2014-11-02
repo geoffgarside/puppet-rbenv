@@ -14,7 +14,7 @@ define rbenv::ruby (
     }
   }
 
-  if $user && $user != 'root' {
+  if $user and $user != 'root' {
     $_homedir = $user ? {
       'root'  => $::rbenv::params::root_homedir,
       default => "${::rbenv::params::user_homedir}/${user}"
