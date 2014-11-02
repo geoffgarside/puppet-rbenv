@@ -40,7 +40,7 @@ class rbenv::install {
   }
 
   Rbenv::Plugin {
-    ensure      => $ensure,
+    ensure      => $::rbenv::ensure,
     rbenv_root  => $rbenv_root,
     user        => $user,
     require     => Vcsrepo[$rbenv_root],
