@@ -24,7 +24,7 @@ define rbenv::build (
 
     # Mac OS X requires GCC for Ruby versions 1.9.3-p0 and below
     # NOTE: This requires that the homebrew/dupes repo has been tapped
-    if $::osfamily == 'Darwin' && versioncmp($version, "1.9.3-p0") < 1 {
+    if $::osfamily == 'Darwin' and versioncmp($version, "1.9.3-p0") < 1 {
       if ! defined(Package['apple-gcc42']) {
         package { 'apple-gcc42':
           ensure => 'present'
