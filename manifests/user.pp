@@ -61,6 +61,16 @@ define rbenv::user(
     require => File[$user_rbenv_root],
   }
 
+  file { "${user_rbenv_root}/default-gems":
+    ensure  => $file_ensure,
+    owner   => $user,
+    group   => $user_group,
+    source  => "${::rbenv::rbenv_root}/default-gems",
+    mode    => '0644',
+    replace => false,
+    require => File[$user_rbenv_root],
+  }
+
   # Create following dirs, keep in sync
   #  * .rbenv/bin
   #  * .rbenv/completions
