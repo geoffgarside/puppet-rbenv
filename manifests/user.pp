@@ -118,12 +118,38 @@ define rbenv::user(
     require => File[$user_rbenv_root],
   }
 
+  file { "${user_rbenv_root}/plugins":
+    ensure  => $dir_ensure,
+    owner   => $user,
+    group   => $user_group,
+    mode    => '0755',
+    source  => "${::rbenv::rbenv_root}/plugins",
+    recurse => true,
+    force   => true,
+    purge   => true,
+    replace => true,
+    require => File[$user_rbenv_root],
+  }
+
   file { "${user_rbenv_root}/rbenv.d":
     ensure  => $dir_ensure,
     owner   => $user,
     group   => $user_group,
     mode    => '0755',
     source  => "${::rbenv::rbenv_root}/rbenv.d",
+    recurse => true,
+    force   => true,
+    purge   => true,
+    replace => true,
+    require => File[$user_rbenv_root],
+  }
+
+  file { "${user_rbenv_root}/shims":
+    ensure  => $dir_ensure,
+    owner   => $user,
+    group   => $user_group,
+    mode    => '0755',
+    source  => "${::rbenv::rbenv_root}/shims",
     recurse => true,
     force   => true,
     purge   => true,
